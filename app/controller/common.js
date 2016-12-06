@@ -1,6 +1,8 @@
 /**
  * Created by SpaceQ on 2016/12/5.
  */
+// var glb_status = require('../app/controller/glb_status');
+// var message = require('../app/controller/message');
 var specificRoom;
 var rooms;
 
@@ -17,8 +19,10 @@ var renderItem = function () {
   })
 };
 
-var renderRoom = function (now_item, No) {
+var renderRoom = function (No) {
+  if (glb_status.self_postion != No) return;
   // console.log('randered Room' + No, now_item);
+  var now_item = deepcopy(raw_items[No]);
   if (typeof specificRoom == "undefined") {
     specificRoom = new Vue({
       el: '#room',
@@ -28,16 +32,12 @@ var renderRoom = function (now_item, No) {
       },
       methods: {
         removeItem: function () {
-          No = this.$data['No'];
-          delete raw_items[No];
           exitRoom();
-          removeItem_controller(No);
+          removeItem_controller(this.$data['No']);
           var myNotification = new Notification('删除' + No + '号拍卖品成功 :)');
         },
         kickOut: function (userId) {
-          No = this.$data['No'];
-          delete raw_items[No]['users'][userId];
-          removeUser_controller(No, userId);
+          removeUser_controller(this.$data['No'], userId);
         }
       }
     });
@@ -47,17 +47,35 @@ var renderRoom = function (now_item, No) {
 };
 
 var addItem_controller = function (single_item) {
-  // TODO broadcast to client
+  glb_status.addRoom(single_item["ID"], single_item["title"], single_item["price"]);
+  message.broadCastMsg("additem " + JSON.stringify(glb_status.rooms[single_item["ID"]]));
   renderItem();
 };
 
 var removeItem_controller = function (No) {
-  // TODO broadcast to client
+  delete raw_items[No];
+  message.broadCastMsg("removeitem " + JSON.stringify(No));
+  glb_status.removeRoom(No);
   renderItem();
 };
 
 var removeUser_controller = function (No, userId) {
-  // TODO broadcast to client
-  var now_item = deepcopy(raw_items[No]);
-  renderRoom(now_item, No);
+  delete raw_items[No]['users'][userId];
+  message.roomCasMsg(No, "userleave " + JSON.stringify([No, userId]));
+  glb_status.userLeaveRoom(userId, No);
+  renderRoom(No);
+};
+
+var enterUser_controller = function (No, userId) {
+  raw_items[No]['users'][userId] = userId;
+  message.roomCasMsg(No, "userenter " + JSON.stringify([No, userId]));
+  glb_status.userEnterRoom(userId, No);
+  renderRoom(No);
+};
+
+var raisePrice_controller = function (No, userId, price) {
+  //TODO check if higher and return result
+  raw_items[No]['userId'] = userId;
+  message.roomCasMsg(No, "price " + price);
+  renderRoom(No);
 };

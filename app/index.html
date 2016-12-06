@@ -48,7 +48,7 @@
 			</div>
 			<ul class="list-group list-group-flush">
 				<li class="list-group-item">Current price: ${{ item.price }}</li>
-				<li class="list-group-item" v-if="item.UserID != ''">Raise by user No.{{ item.UserID }}</li>
+				<li class="list-group-item" v-if="item.userId != ''">Raise by user No.{{ item.userId }}</li>
 				<li class="list-group-item" v-else>Nobody raised up YET</li>
 			</ul>
 		</div>
@@ -104,8 +104,9 @@
 				<h4 class="card-title">{{ status.title }}</h4>
 			</div>
 			<ul class="list-group list-group-flush">
-				<li class="list-group-item">current price: ${{ status.price }}</li>
-				<li class="list-group-item">raise by user No.{{ status.UserID }}</li>
+				<li class="list-group-item">Current price: ${{ status.price }}</li>
+				<li class="list-group-item" v-if="status.userId != ''">Raise by user No.{{ status.userId }}</li>
+				<li class="list-group-item" v-else>Nobody raised up YET</li>
 				<li class="list-group-item">
 					<button class="btn btn-warning" v-on:click="removeItem">关闭拍卖室</button>
 				</li>
@@ -115,7 +116,7 @@
 			<div class="row">
 				<div id="msgList" class="col-xs-12">
 					<div class="alert alert-info alert-dismissible fade in" role="alert">
-						<button type="button" class="close" data-dismiss="info" aria-label="Close">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 						<strong>Holy guacamole!</strong> You should check in on some of those fields below.
@@ -135,6 +136,9 @@
 		</div>
 		<div class="col-xs-3">
 			<ul class="list-group">
+				<li class="list-group-item">
+					User List
+				</li>
 				<li class="list-group-item" v-for="user in status.users">
 					<span class="tag tag-default tag-pill float-xs-right kickout" v-on:click="kickOut(user)">x</span>
 					{{ user }}
@@ -144,10 +148,18 @@
 	</div>
 </div>
 </body>
+<script src="common/header.js"></script>
+<script src="controller/status.js"></script>
 <script src="controller/common.js"></script>
-<script src="js/render.js"></script>
+<script src="controller/message.js"></script>
 <script src="controller/items.js"></script>
+<script src="js/render.js"></script>
 <script src="js/room.js"></script>
 <script src="js/message.js"></script>
 <script src="js/nav.js"></script>
+<script src="core/socket.js"></script>
+<script src="core/receiver.js"></script>
+<script src="core/responser.js"></script>
+<script src="core/sender.js"></script>
+
 </html>
