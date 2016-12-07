@@ -4,7 +4,7 @@
  */
 
 responser.join = function (user, msg, rinfo) {
-  var roomId = parseInt(msg);
+  var roomId = JSON.parse(msg);
   enterUser_controller(roomId, user);
 };
 

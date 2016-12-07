@@ -10,6 +10,7 @@ server.on('error', (err) => {
 });
 
 server.on('message', (msg, rinfo) => {
+  msg = msg.toString();
   console.log(`server got: ${msg} from ${rinfo.address}:${rinfo.port}`);
   var [user, type] = msg.split(" ", 2);
   msg = msg.substring(user.length + type.length + 2);

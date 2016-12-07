@@ -28,7 +28,7 @@ rooms = new Vue({
       var price = $("#newItemPrice").find("input").val();
       // TODO check value vaildation
       var No = parseInt(Math.random() * 100000);
-      raw_items[No] = {ID: No, title: name, price: parseInt(price), userId: '', users: []};
+      raw_items[No] = {ID: No, title: name, price: parseInt(price), userId: '', users: {}};
       addItem_controller(raw_items[No]);
       $('#newItemForm')[0].reset();
       $('#addNewItem').modal('hide');

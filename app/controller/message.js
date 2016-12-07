@@ -13,12 +13,12 @@ message.sendMessage = function (userid, msg) {
 
 message.roomCasMsg = function (roomNo, msg) {
   for (var userid in glb_status.users[roomNo]) {
-    message.sendMessage(userid, "roomcast " + msg);
+    message.sendMessage(userid, msg);
   }
 };
 
 message.broadCastMsg = function (msg) {
   for (var userid in glb_status.onlineUser) {
-    message.sendMessage(userid, "broadcast " + msg);
+    message.sendMessage(userid, msg);
   }
 };

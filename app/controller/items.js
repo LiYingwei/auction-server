@@ -4,7 +4,7 @@
 var fs = require('fs');
 
 fs.readFile('app/data/items.txt', 'utf8', function (err, data) {
-  if (err || true) { // TODO remove || true
+  if (err) { // TODO remove || true
     raw_items = {
       1: {
         ID: 1,

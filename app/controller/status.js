@@ -3,7 +3,7 @@
  */
 var assert = require('assert');
 glb_status.onlineUser = {};  // userid : roomid or -1
-glb_status.rooms = {}; // id: {title,price,userId}
+glb_status.rooms = {}; // id: {ID,title,price,userId}
 glb_status.users = {};
 glb_status.rinfo = {};
 glb_status.self_postion = -1;
@@ -12,7 +12,7 @@ glb_status.removeRoom = function (id) {
   if (glb_status.self_postion == id) {
     glb_status.self_postion = -1;
   } // may be redundant
-  for(var user in glb_status.rooms[id].userId) {
+  for (var user in glb_status.rooms[id].userId) {
     glb_status.onlineUser[user] = -1;
   }
   delete glb_status.rooms[id];
@@ -21,7 +21,7 @@ glb_status.removeRoom = function (id) {
 
 glb_status.addRoom = function (id, title, price, userId = '') {
   //TODO assert userId == '' for there is no user in a new room
-  glb_status.rooms[id] = {title: title, price:price, userId: userId};
+  glb_status.rooms[id] = {ID: id, title: title, price: price, userId: userId};
   glb_status.users[id] = {};
 };
 
@@ -46,4 +46,9 @@ glb_status.userEnterRoom = function (userId, roomId) {
   assert(glb_status.onlineUser[userId] == -1);
   glb_status.onlineUser[userId] = roomId;
   glb_status.users[roomId][userId] = userId;
+};
+
+glb_status.raisePrice = function (userId, roomId, price) {
+  glb_status.rooms[roomId]["price"] = price;
+  glb_status.rooms[roomId]["userId"] = userId;
 };

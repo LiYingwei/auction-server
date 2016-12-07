@@ -12,7 +12,21 @@ function broadcastWrap() {
   var $broadcastMsg = $('#broadcastMsg');
   var msg = $broadcastMsg.val();
   var No = specificRoom['No'];
-  message.roomCasMsg(No, msg);
+  message.roomCasMsg(No, "message Roomcast " + msg);
   appendMsg('Roomcast', msg);
   $broadcastMsg.val('');
+}
+
+function sendMessageNavWrap() {
+  var $userid = $('#send-user-id');
+  var $msg = $('#send-user-msg');
+  var userid = $userid.val();
+  var msg = $msg.val();
+  if (userid == '') {
+    message.broadCastMsg("message Broadcast ", msg);
+  } else
+    message.sendMessage(userid, "message toyou " + msg);
+  alert("成功发送");
+  $userid.val('');
+  $msg.val('');
 }

@@ -61,21 +61,25 @@ var removeItem_controller = function (No) {
 
 var removeUser_controller = function (No, userId) {
   delete raw_items[No]['users'][userId];
-  message.roomCasMsg(No, "userleave " + JSON.stringify([No, userId]));
+  message.roomCasMsg(No, "userleave " + JSON.stringify(userId));
   glb_status.userLeaveRoom(userId, No);
   renderRoom(No);
 };
 
 var enterUser_controller = function (No, userId) {
   raw_items[No]['users'][userId] = userId;
-  message.roomCasMsg(No, "userenter " + JSON.stringify([No, userId]));
   glb_status.userEnterRoom(userId, No);
+  message.roomCasMsg(No, "userenter " + JSON.stringify([No, userId]));
+  message.sendMessage(userId, "userlist " + JSON.stringify(glb_status.users[No]));
   renderRoom(No);
 };
 
 var raisePrice_controller = function (No, userId, price) {
   //TODO check if higher and return result
   raw_items[No]['userId'] = userId;
-  message.roomCasMsg(No, "price " + price);
+  raw_items[No]['price'] = price;
+  glb_status.raisePrice(userId, No, price);
+  message.broadCastMsg("price " + JSON.stringify([No, price, userId]));
   renderRoom(No);
+  renderItem();
 };
