@@ -30,14 +30,17 @@ glb_status.userLogin = function (id, rinfo) {
   glb_status.onlineUser[id] = -1;
 };
 
-// glb_status.userLogout = function (id) {
-//   if (glb_status.onlineUser[id] != -1) {
-//     glb_status.userLeaveRoom(id, glb_status.onlineUser[id]);
-//   }
-//   delete glb_status.onlineUser[id];
-// };
+glb_status.userLogout = function (id) {
+  if (glb_status.onlineUser[id] != -1) {
+    var roomid = glb_status.onlineUser[id];
+    if (glb_status.rooms[roomid].userId == id) return;
+    glb_status.userLeaveRoom(id, glb_status.onlineUser[id]);
+  }
+  delete glb_status.onlineUser[id];
+};
 
 glb_status.userLeaveRoom = function (userId, roomId) {
+  if (glb_status.rooms[roomId].userId == userId) return;
   delete glb_status.users[roomId][userId];
   glb_status.onlineUser[userId] = -1;
 };

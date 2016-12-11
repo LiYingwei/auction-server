@@ -21,6 +21,10 @@ responser.login = function (user, msg, rinfo) {
   glb_status.userLogin(user, rinfo);
 };
 
+responser.logout = function (user, msg, rinfo) {
+  glb_status.userLogout(user, rinfo);
+};
+
 responser.auctions = function (user, msg, rinfo) {
   sender.send(rinfo, "auctions " + JSON.stringify(glb_status.rooms));
 };

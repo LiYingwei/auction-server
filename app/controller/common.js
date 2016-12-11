@@ -37,6 +37,9 @@ var renderRoom = function (No) {
           var myNotification = new Notification('删除' + No + '号拍卖品成功 :)');
         },
         kickOut: function (userId) {
+          if (userId == this.$data['status'].userId) {
+            alert("最高出价不能踢 ：）");
+          }
           removeUser_controller(this.$data['No'], userId);
         }
       }
@@ -75,7 +78,7 @@ var enterUser_controller = function (No, userId) {
 };
 
 var raisePrice_controller = function (No, userId, price) {
-  //TODO check if higher and return result
+  if (price < glb_status.rooms[No].price) return;
   raw_items[No]['userId'] = userId;
   raw_items[No]['price'] = price;
   glb_status.raisePrice(userId, No, price);
